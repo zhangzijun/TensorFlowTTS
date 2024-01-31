@@ -73,7 +73,12 @@ class TFAutoModel(object):
         if pretrained_path is not None:
             if not os.path.isfile(pretrained_path):
                 # retrieve correct hub url
-                download_url = hf_hub_url(repo_id=pretrained_path, filename=MODEL_FILE_NAME)
+                # 设置默认值为 MODEL_FILE_NAME，如果 argv_filename 为空
+                # 在函数调用中传递 argv_filename
+                download_url = hf_hub_url(repo_id=pretrained_path,
+                                          filename=kwargs.get("filename", MODEL_FILE_NAME), revision=kwargs.get("revision", 'main'))
+                # 调用 hf_hub_url 函数
+                # download_url = hf_hub_url(repo_id=pretrained_path, filename=MODEL_FILE_NAME)
 
                 downloaded_file = str(
                     cached_download(
